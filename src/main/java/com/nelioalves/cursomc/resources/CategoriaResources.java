@@ -1,27 +1,27 @@
 package com.nelioalves.cursomc.resources;
 
 import com.nelioalves.cursomc.domain.Categoria;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.nelioalves.cursomc.services.CategoriaService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/categorias")
 public class CategoriaResources {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Categoria> listar(){
+    private final CategoriaService categoriaService;
 
-        Categoria categoria1 = new Categoria(1,"informática");
-        Categoria categoria2 = new Categoria(2,"escritório");
+    public CategoriaResources(CategoriaService categoriaService) {
+        this.categoriaService = categoriaService;
+    }
 
-        List<Categoria> lista = new ArrayList<>();
-        lista.add(categoria1);
-        lista.add(categoria2);
-
-        return lista;
+    @GetMapping("/{id}")
+    public ResponseEntity find(@PathVariable Integer id){
+        Optional<Categoria> categoria = categoriaService.buscar(id);
+        return ResponseEntity.ok().body(categoria);
     }
 }
