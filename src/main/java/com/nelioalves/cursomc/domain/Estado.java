@@ -1,5 +1,7 @@
 package com.nelioalves.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ public class Estado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-
+    @JsonBackReference
     @OneToMany(mappedBy = "estado")
     private List<Cidade> cidades = new ArrayList<>();
 
