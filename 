@@ -1,0 +1,65 @@
+[33mcommit 9d5988c334a680055c425bfed1e1b1838468f046[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Wed Feb 8 14:00:20 2023 -0300
+
+    Endpoint /clientes/{id} disponível
+
+[33mcommit 2ada2d2fd680814cb47af986a0bfbd4f0bbaef5d[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Wed Feb 8 12:05:57 2023 -0300
+
+    Cliente, TipoCliente, telefones e enderecos
+
+[33mcommit 684029aa65199aa12a6048b0ae27c708a8cda310[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Wed Feb 8 09:54:57 2023 -0300
+
+    Estado e Cidade
+
+[33mcommit e739e2a6cdee39e1e68d8eb86a8c58ea539be8ed[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Tue Feb 7 16:40:10 2023 -0300
+
+    Ajustes no endpoint /categorias/{id}
+
+[33mcommit 09797921d957a1e0d35b0b607261f21d1cc3afd1[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Tue Feb 7 15:31:10 2023 -0300
+
+    Produto e associação muitos para muitos
+
+[33mcommit 1f15a9ba3846df6e3aeab7c9997b4ca42de6b178[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Tue Feb 7 14:51:30 2023 -0300
+
+    Criando operação de instanciação
+
+[33mcommit 33c50e3f3a9ff08eaebc41c827d2ffe8babb92a5[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Tue Feb 7 14:43:55 2023 -0300
+
+    Criando repository e service para Categoria
+
+[33mcommit c8defcad2c45e226d613c504d7751304b0a854b7[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Tue Feb 7 12:39:17 2023 -0300
+
+    Integrando banco de dados H2 e criação automática da base de dados
+
+[33mcommit 1ed0588083487406684b77d8381d8f1f0be05e15[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Tue Feb 7 12:06:23 2023 -0300
+
+    Testando a Categoria
+
+[33mcommit 9fa9b822c9b2faf451c7a3389695e770a4015d52[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Tue Feb 7 11:07:54 2023 -0300
+
+    REST testado
+
+[33mcommit 00e8faaa625e68bfcf2a0d198f5d6adf2028d734[m
+Author: MateusCassio10 <mateuscassio07@gmail.com>
+Date:   Tue Feb 7 10:52:11 2023 -0300
+
+    Projeto Criado
