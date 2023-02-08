@@ -1,29 +1,25 @@
 package com.nelioalves.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Categoria  {
+public class Cidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
 
-    @JsonManagedReference
-    @ManyToMany(mappedBy = "categorias")
-    private List<Produto> produtos = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
 
-    public Categoria(){
-    }
+    public Cidade(){}
 
-    public Categoria(Integer id, String nome) {
+    public Cidade(Integer id, String nome, Estado estado) {
         this.id = id;
         this.nome = nome;
+        this.estado = estado;
     }
 
     public Integer getId() {
@@ -42,20 +38,20 @@ public class Categoria  {
         this.nome = nome;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
+    public Estado getEstado() {
+        return estado;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Categoria categoria = (Categoria) o;
-        return Objects.equals(id, categoria.id);
+        Cidade cidade = (Cidade) o;
+        return id.equals(cidade.id);
     }
 
     @Override
