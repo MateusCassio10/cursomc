@@ -29,7 +29,6 @@ public class ItemPedido  {
         return id.getPedido();
     }
 
-
     public Produto getProduto(){
         return id.getProduto();
     }
