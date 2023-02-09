@@ -112,9 +112,9 @@ public class CursomcApplication implements CommandLineRunner {
 		pedido1.getItens().addAll(Arrays.asList(itemPedido1, itemPedido2));
 		pedido2.getItens().add(itemPedido3);
 
-		produto1.getItens().addAll(Arrays.asList(itemPedido1));
-		produto2.getItens().addAll(Arrays.asList(itemPedido3));
-		produto3.getItens().addAll(Arrays.asList(itemPedido3));
+		produto1.getItens().add(itemPedido1);
+		produto2.getItens().add(itemPedido3);
+		produto3.getItens().add(itemPedido3);
 
 		itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2, itemPedido3));
 	}
