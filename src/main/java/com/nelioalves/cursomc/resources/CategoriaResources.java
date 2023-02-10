@@ -70,8 +70,5 @@ public class CategoriaResources {
         Page<CategoriaDTO> listDto = list.map(CategoriaDTO::new);
         return ResponseEntity.ok().body(listDto);
     }
-
-
-
 }
 
