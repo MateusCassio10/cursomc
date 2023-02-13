@@ -43,7 +43,7 @@ public class ClienteService {
     }
 
     public Cliente update(Cliente cliente) {
-        Cliente clienteNew = clienteRepository.getOne(cliente.getId());
+        Cliente clienteNew = clienteRepository.getById(cliente.getId());
         updateData(clienteNew, cliente);
         return clienteRepository.save(clienteNew);
     }
