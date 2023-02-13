@@ -48,12 +48,7 @@ public class ClienteService {
 
     public Cliente save(Cliente cliente) {
         clienteRepository.save(cliente);
-        enderecoRepository.save(cliente.getEnderecos().get(0));
         return cliente;
-
-
-//        cliente.setEnderecos(cliente.getEnderecos());
-//        return clienteRepository.save(cliente);
     }
 
     public Optional<Cliente> findById(Integer id) {
