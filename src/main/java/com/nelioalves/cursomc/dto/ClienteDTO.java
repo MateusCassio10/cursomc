@@ -1,13 +1,13 @@
 package com.nelioalves.cursomc.dto;
 
 import com.nelioalves.cursomc.domain.Cliente;
+import com.nelioalves.cursomc.services.validation.ClienteUpdate;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-
+@ClienteUpdate
 public class ClienteDTO {
-
     private Integer id;
     @NotEmpty(message = "preenchimento obrigatório")
     @Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
