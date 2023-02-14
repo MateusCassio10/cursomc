@@ -37,6 +37,14 @@ public class Pedido {
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
 
+    public double getValorTotal(){
+        double soma = 0.0;
+        for(ItemPedido itemPedido : itens){
+            soma += itemPedido.getSubTotal();
+        }
+        return soma;
+    }
+
     public Integer getId() {
         return id;
     }
