@@ -60,7 +60,7 @@ public class CategoriaResources {
         return ResponseEntity.ok().body(listDto);
     }
 
-    @GetMapping(value = "page")
+    @GetMapping(value = "/page")
     public ResponseEntity<Page<CategoriaDTO>> findPage(
            @RequestParam(value = "page", defaultValue = "0") Integer page,
            @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
