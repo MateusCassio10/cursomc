@@ -5,10 +5,7 @@ import com.nelioalves.cursomc.domain.ItemPedido;
 import com.nelioalves.cursomc.domain.PagamentoComBoleto;
 import com.nelioalves.cursomc.domain.Pedido;
 import com.nelioalves.cursomc.domain.enums.EstadoPagamento;
-import com.nelioalves.cursomc.repositories.ItemPedidoRepository;
-import com.nelioalves.cursomc.repositories.PagamentoRepository;
-import com.nelioalves.cursomc.repositories.PedidoRepository;
-import com.nelioalves.cursomc.repositories.ProdutoRepository;
+import com.nelioalves.cursomc.repositories.*;
 import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +21,19 @@ public class PedidoService {
 
     private final ProdutoService produtoService;
     private final ItemPedidoRepository itemPedidoRepository;
+    private final ClienteRepository clienteRepository;
 
     public PedidoService(PedidoRepository pedidoRepository,
                          PagamentoRepository pagamentoRepository,
                          ProdutoRepository produtoRepository, ProdutoService produtoService,
-                         ItemPedidoRepository itemPedidoRepository) {
+                         ItemPedidoRepository itemPedidoRepository,
+                         ClienteRepository clienteRepository) {
         this.pedidoRepository = pedidoRepository;
         this.pagamentoRepository = pagamentoRepository;
         this.produtoRepository = produtoRepository;
         this.produtoService = produtoService;
         this.itemPedidoRepository = itemPedidoRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     public Optional<Pedido> find(Integer id)  {
@@ -48,6 +48,7 @@ public class PedidoService {
     public Pedido save(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstante(new Date());
+        pedido.setCliente(clienteRepository.getById(pedido.getCliente().getId()));
         pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
         if(pedido.getPagamento() instanceof PagamentoComBoleto){
@@ -58,10 +59,12 @@ public class PedidoService {
         pagamentoRepository.save(pedido.getPagamento());
         for (ItemPedido itemPedido : pedido.getItens()) {
             itemPedido.setDesconto(0.0);
-            itemPedido.setPreco(produtoRepository.getById(itemPedido.getProduto().getId()).getPreco());
+            itemPedido.setProduto(produtoRepository.getById(itemPedido.getProduto().getId()));
+            itemPedido.setPreco(itemPedido.getProduto().getPreco());
             itemPedido.setPedido(pedido);
         }
         itemPedidoRepository.saveAll(pedido.getItens());
+        System.out.println(pedido);
         return pedido;
     }
 }
