@@ -18,22 +18,24 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final PagamentoRepository pagamentoRepository;
     private final ProdutoRepository produtoRepository;
-
     private final ProdutoService produtoService;
     private final ItemPedidoRepository itemPedidoRepository;
     private final ClienteRepository clienteRepository;
+
+    private final EmailService emailService;
 
     public PedidoService(PedidoRepository pedidoRepository,
                          PagamentoRepository pagamentoRepository,
                          ProdutoRepository produtoRepository, ProdutoService produtoService,
                          ItemPedidoRepository itemPedidoRepository,
-                         ClienteRepository clienteRepository) {
+                         ClienteRepository clienteRepository, EmailService emailService) {
         this.pedidoRepository = pedidoRepository;
         this.pagamentoRepository = pagamentoRepository;
         this.produtoRepository = produtoRepository;
         this.produtoService = produtoService;
         this.itemPedidoRepository = itemPedidoRepository;
         this.clienteRepository = clienteRepository;
+        this.emailService = emailService;
     }
 
     public Optional<Pedido> find(Integer id)  {
@@ -64,7 +66,7 @@ public class PedidoService {
             itemPedido.setPedido(pedido);
         }
         itemPedidoRepository.saveAll(pedido.getItens());
-        System.out.println(pedido);
+        emailService.sendOrderConfirmationEmail(pedido);
         return pedido;
     }
 }
