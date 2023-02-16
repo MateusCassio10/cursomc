@@ -4,6 +4,7 @@ import com.nelioalves.cursomc.domain.*;
 import com.nelioalves.cursomc.domain.enums.EstadoPagamento;
 import com.nelioalves.cursomc.domain.enums.TipoCliente;
 import com.nelioalves.cursomc.repositories.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -23,10 +24,11 @@ public class DBService {
     private final PedidoRepository pedidoRepository;
     private final PagamentoRepository pagamentoRepository;
     private final ItemPedidoRepository itemPedidoRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     public DBService(CategoriaRepository categoriaRepository,
-                              ProdutoRepository produtoRepository, EstadoRepository estadoRepository, CidadeRepository cidadeRepository, ClienteRepository clienteRepository, EnderecoRepository enderecoRepository, PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository, ItemPedidoRepository itemPedidoRepository) {
+                     ProdutoRepository produtoRepository, EstadoRepository estadoRepository, CidadeRepository cidadeRepository, ClienteRepository clienteRepository, EnderecoRepository enderecoRepository, PedidoRepository pedidoRepository, PagamentoRepository pagamentoRepository, ItemPedidoRepository itemPedidoRepository, BCryptPasswordEncoder passwordEncoder) {
         this.categoriaRepository = categoriaRepository;
         this.produtoRepository = produtoRepository;
         this.estadoRepository = estadoRepository;
@@ -36,6 +38,7 @@ public class DBService {
         this.pedidoRepository = pedidoRepository;
         this.pagamentoRepository = pagamentoRepository;
         this.itemPedidoRepository = itemPedidoRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void instantiateTestDataBase() throws ParseException {
@@ -105,7 +108,7 @@ public class DBService {
         cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
 
-        Cliente cliente1 = new Cliente(null, "Mateus Santos", "mateuscassio77@gmail.com","363789912377", TipoCliente.PESSOAFISICA);
+        Cliente cliente1 = new Cliente(null, "Mateus Santos", "mateuscassio77@gmail.com","363789912377", TipoCliente.PESSOAFISICA, passwordEncoder.encode("123"));
         cliente1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 
         Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "jardim", "38220834", cliente1, cidade1);

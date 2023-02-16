@@ -16,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,12 +30,15 @@ public class ClienteService {
     private final CidadeRepository cidadeRepository;
     private final EnderecoRepository enderecoRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder;
+
     public ClienteService(ClienteRepository clienteRepository,
                           CidadeRepository cidadeRepository,
-                          EnderecoRepository enderecoRepository) {
+                          EnderecoRepository enderecoRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.clienteRepository = clienteRepository;
         this.cidadeRepository = cidadeRepository;
         this.enderecoRepository = enderecoRepository;
+        this.passwordEncoder = bCryptPasswordEncoder;
     }
 
     public Optional<Cliente> find(Integer id) {
@@ -90,11 +94,11 @@ public class ClienteService {
     }
 
     public Cliente fromDto(ClienteDTO clienteDTO) {
-        return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
+        return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null, null);
     }
 
     public Cliente fromDto(ClienteNewDTO clienteNewDTO) {
-        Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipo()));
+        Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipo()), passwordEncoder.encode(clienteNewDTO.getSenha()));
         Cidade cidade = cidadeRepository.getById(clienteNewDTO.getCidadeId());
         Endereco endereco = new Endereco(null, clienteNewDTO.getLogradouro(), clienteNewDTO.getNumero(), clienteNewDTO.getComplemento(), clienteNewDTO.getBairro(), clienteNewDTO.getCep(), cliente, cidade);
 

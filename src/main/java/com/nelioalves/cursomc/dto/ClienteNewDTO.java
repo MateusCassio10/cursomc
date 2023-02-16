@@ -16,6 +16,8 @@ public class ClienteNewDTO {
     @NotEmpty(message = "preenchimento obrigatório")
     private String cpfOuCnpj;
     private Integer tipo;
+    @NotEmpty(message = "preenchimento obrigatório")
+    private String senha;
 
     @NotEmpty(message = "preenchimento obrigatório")
     private String logradouro;
@@ -64,6 +66,14 @@ public class ClienteNewDTO {
 
     public void setTipo(Integer tipo) {
         this.tipo = tipo;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getLogradouro() {
