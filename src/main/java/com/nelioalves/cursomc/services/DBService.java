@@ -2,6 +2,7 @@ package com.nelioalves.cursomc.services;
 
 import com.nelioalves.cursomc.domain.*;
 import com.nelioalves.cursomc.domain.enums.EstadoPagamento;
+import com.nelioalves.cursomc.domain.enums.Perfil;
 import com.nelioalves.cursomc.domain.enums.TipoCliente;
 import com.nelioalves.cursomc.repositories.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -108,16 +109,22 @@ public class DBService {
         cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
 
-        Cliente cliente1 = new Cliente(null, "Mateus Santos", "mateuscassio77@gmail.com","363789912377", TipoCliente.PESSOAFISICA, passwordEncoder.encode("123"));
+        Cliente cliente1 = new Cliente(null, "Mateus Santos", "mateuscassio77@gmail.com","41273864107", TipoCliente.PESSOAFISICA, passwordEncoder.encode("123"));
         cliente1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+        Cliente cliente2 = new Cliente(null, "Maria Aparecida", "mateuscassio77@gmail.com","99566687702", TipoCliente.PESSOAFISICA, passwordEncoder.encode("123"));
+        cliente2.getTelefones().addAll(Arrays.asList("98851359", "81220202"));
+        cliente2.addPerfil(Perfil.ADMIN);
 
         Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "jardim", "38220834", cliente1, cidade1);
         Endereco endereco2 = new Endereco(null, "Avenida Matos","105", "Sala 800", "Centro", "38777012",cliente1,cidade2);
+        Endereco endereco3 = new Endereco(null, "Avenida Floriano","2106", "Casa", "Centro", "325536714",cliente2,cidade2);
 
         cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+        cliente2.getEnderecos().addAll(Arrays.asList(endereco3));
 
-        clienteRepository.saveAll(List.of(cliente1));
-        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+        clienteRepository.saveAll(List.of(cliente1,cliente2));
+        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2, endereco3));
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
