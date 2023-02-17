@@ -8,6 +8,7 @@ import com.nelioalves.cursomc.dto.ClienteNewDTO;
 import com.nelioalves.cursomc.services.ClienteService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -45,6 +46,7 @@ public class ClienteResources {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO clienteDTO, @PathVariable Integer id){
         Cliente cliente = clienteService.fromDto(clienteDTO);
@@ -53,12 +55,14 @@ public class ClienteResources {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         clienteService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> findAll(){
         List<Cliente> listCliente = clienteService.findAll();
@@ -66,6 +70,7 @@ public class ClienteResources {
         return ResponseEntity.ok().body(listDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "page")
     public ResponseEntity<Page<ClienteDTO>> findPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
