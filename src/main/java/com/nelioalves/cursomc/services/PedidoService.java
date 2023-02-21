@@ -1,12 +1,14 @@
 package com.nelioalves.cursomc.services;
 
-import com.nelioalves.cursomc.domain.Categoria;
-import com.nelioalves.cursomc.domain.ItemPedido;
-import com.nelioalves.cursomc.domain.PagamentoComBoleto;
-import com.nelioalves.cursomc.domain.Pedido;
+import com.nelioalves.cursomc.domain.*;
 import com.nelioalves.cursomc.domain.enums.EstadoPagamento;
 import com.nelioalves.cursomc.repositories.*;
+import com.nelioalves.cursomc.security.UserSpringSecurity;
+import com.nelioalves.cursomc.services.exceptions.AuthorizationException;
 import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -23,12 +25,14 @@ public class PedidoService {
     private final ClienteRepository clienteRepository;
 
     private final EmailService emailService;
+    private final CategoriaRepository categoriaRepository;
 
     public PedidoService(PedidoRepository pedidoRepository,
                          PagamentoRepository pagamentoRepository,
                          ProdutoRepository produtoRepository, ProdutoService produtoService,
                          ItemPedidoRepository itemPedidoRepository,
-                         ClienteRepository clienteRepository, EmailService emailService) {
+                         ClienteRepository clienteRepository, EmailService emailService,
+                         CategoriaRepository categoriaRepository) {
         this.pedidoRepository = pedidoRepository;
         this.pagamentoRepository = pagamentoRepository;
         this.produtoRepository = produtoRepository;
@@ -36,6 +40,7 @@ public class PedidoService {
         this.itemPedidoRepository = itemPedidoRepository;
         this.clienteRepository = clienteRepository;
         this.emailService = emailService;
+        this.categoriaRepository = categoriaRepository;
     }
 
     public Optional<Pedido> find(Integer id)  {
@@ -68,5 +73,15 @@ public class PedidoService {
         itemPedidoRepository.saveAll(pedido.getItens());
         emailService.sendOrderConfirmationHtmlEmail(pedido);
         return pedido;
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSpringSecurity user = UserServices.authenticated();
+        if(user == null){
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteRepository.getById(user.getId());
+        return pedidoRepository.findByCliente(cliente, pageRequest);
     }
 }

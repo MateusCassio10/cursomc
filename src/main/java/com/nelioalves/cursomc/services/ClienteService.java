@@ -46,7 +46,7 @@ public class ClienteService {
 
     public Optional<Cliente> find(Integer id) {
         UserSpringSecurity user = UserServices.authenticated();
-        if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+        if(user.isEnabled() || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
 
             throw new AuthorizationException("Acesso negado");
         }
