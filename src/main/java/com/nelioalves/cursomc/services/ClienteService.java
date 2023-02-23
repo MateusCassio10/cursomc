@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -126,7 +127,16 @@ public class ClienteService {
         return cliente;
     }
 
-    public URI uploadProfilePicture(MultipartFile multipartFile) {
-        return s3Service.uploadFile(multipartFile);
+    public URI uploadProfilePicture(MultipartFile multipartFile) throws IOException {
+        UserSpringSecurity user = UserServices.authenticated();
+        if(user == null){
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        URI uri = s3Service.uploadFile(multipartFile);
+
+        Cliente cliente = clienteRepository.getById(user.getId());
+        cliente.setImageUrl(uri.toString());
+        return uri;
     }
 }

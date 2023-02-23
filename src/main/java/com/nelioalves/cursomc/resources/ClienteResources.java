@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -85,7 +86,7 @@ public class ClienteResources {
 
     @PostMapping("/picture")
     @Transactional
-    public ResponseEntity<Void> uploadProfilePicure(@RequestParam(name = "file") MultipartFile file) {
+    public ResponseEntity<Void> uploadProfilePicure(@RequestParam(name = "file") MultipartFile file) throws IOException {
         URI uri = clienteService.uploadProfilePicture(file);
         return ResponseEntity.created(uri).build();
     }
