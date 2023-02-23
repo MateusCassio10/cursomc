@@ -15,6 +15,7 @@ import com.nelioalves.cursomc.security.UserSpringSecurity;
 import com.nelioalves.cursomc.services.exceptions.AuthorizationException;
 import com.nelioalves.cursomc.services.exceptions.DataIntegrityException;
 import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
@@ -36,16 +38,20 @@ public class ClienteService {
     private final CidadeRepository cidadeRepository;
     private final EnderecoRepository enderecoRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-
+    private final ImageService imageService;
     private final S3Service s3Service;
+
+    @Value("${img.prefix.client.profile}")
+    private String prefix;
 
     public ClienteService(ClienteRepository clienteRepository,
                           CidadeRepository cidadeRepository,
-                          EnderecoRepository enderecoRepository, BCryptPasswordEncoder bCryptPasswordEncoder, S3Service s3Service) {
+                          EnderecoRepository enderecoRepository, BCryptPasswordEncoder bCryptPasswordEncoder, ImageService imageService, S3Service s3Service) {
         this.clienteRepository = clienteRepository;
         this.cidadeRepository = cidadeRepository;
         this.enderecoRepository = enderecoRepository;
         this.passwordEncoder = bCryptPasswordEncoder;
+        this.imageService = imageService;
         this.s3Service = s3Service;
     }
 
@@ -133,10 +139,9 @@ public class ClienteService {
             throw new AuthorizationException("Acesso negado");
         }
 
-        URI uri = s3Service.uploadFile(multipartFile);
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String fileName = prefix + user.getId() + ".jpg";
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 
-        Cliente cliente = clienteRepository.getById(user.getId());
-        cliente.setImageUrl(uri.toString());
-        return uri;
     }
 }
