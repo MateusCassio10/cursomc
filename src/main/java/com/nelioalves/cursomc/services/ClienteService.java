@@ -21,7 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,16 +34,18 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final CidadeRepository cidadeRepository;
     private final EnderecoRepository enderecoRepository;
-
     private final BCryptPasswordEncoder passwordEncoder;
+
+    private final S3Service s3Service;
 
     public ClienteService(ClienteRepository clienteRepository,
                           CidadeRepository cidadeRepository,
-                          EnderecoRepository enderecoRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+                          EnderecoRepository enderecoRepository, BCryptPasswordEncoder bCryptPasswordEncoder, S3Service s3Service) {
         this.clienteRepository = clienteRepository;
         this.cidadeRepository = cidadeRepository;
         this.enderecoRepository = enderecoRepository;
         this.passwordEncoder = bCryptPasswordEncoder;
+        this.s3Service = s3Service;
     }
 
     public Optional<Cliente> find(Integer id) {
@@ -120,5 +124,9 @@ public class ClienteService {
             cliente.getTelefones().add(clienteNewDTO.getTelefone3());
         }
         return cliente;
+    }
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+        return s3Service.uploadFile(multipartFile);
     }
 }
